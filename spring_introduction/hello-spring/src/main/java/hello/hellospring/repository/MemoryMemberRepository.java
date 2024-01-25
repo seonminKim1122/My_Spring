@@ -8,6 +8,7 @@ import java.util.*;
 
 public class MemoryMemberRepository implements MemberRepository{
 
+    // 메모리에 저장하는 방식이므로 어플리케이션이 다운되면 데이터도 다 날아감
     private static Map<Long, Member> store = new HashMap<>();
     private static long sequence = 0L;
 
