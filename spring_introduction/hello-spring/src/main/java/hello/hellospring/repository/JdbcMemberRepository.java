@@ -11,7 +11,7 @@ import java.util.Optional;
 
 
 public class JdbcMemberRepository implements MemberRepository {
-    private final DataSource dataSource; // DB 에 접근하기 위해 필요
+    private final DataSource dataSource; // DB 에 접근하기 위해 필요, Spring Container 를 통해 DI 가능
 
     public JdbcMemberRepository(DataSource dataSource) { // Spring Container 로부터 주입 받아야 함
         this.dataSource = dataSource;

@@ -1,6 +1,7 @@
 package hello.hellospring;
 
 import hello.hellospring.repository.JdbcMemberRepository;
+import hello.hellospring.repository.JdbcTemplateMemberRepository;
 import hello.hellospring.repository.MemberRepository;
 import hello.hellospring.repository.MemoryMemberRepository;
 import hello.hellospring.service.MemberService;
@@ -32,6 +33,7 @@ public class SpringConfig {
         // 컴포넌트 스캔을 이용하는 방법에 비해 훨씬 편리하다.
         // 컴포넌트 스캔을 쓰면 기존 구현체 클래스에서 @Repository 제거하고 새로운 구현체 클래스에 붙이는 등의 작업 필요
 //        return new MemoryMemberRepository();
-        return new JdbcMemberRepository(dataSource);
+//        return new JdbcMemberRepository(dataSource);
+        return new JdbcTemplateMemberRepository(dataSource);
     }
 }
