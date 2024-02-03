@@ -20,9 +20,18 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	
+<<<<<<< HEAD
 	// jdbc, h2 데이터베이스 관련 라이브러리 추가
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	runtimeOnly 'com.h2database:h2'
+=======
+	// jdbc, h2 관련 라이브러리 추가
+//	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	runtimeOnly 'com.h2database:h2'
+	
+	// jpa 관련 라이브러리(jdbc 관련 라이브러리도 포함하고 있음)
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+>>>>>>> 32a32180a0e1b25daeca3e6b2e812a1569023eed
 }
 
 tasks.named('test') {
