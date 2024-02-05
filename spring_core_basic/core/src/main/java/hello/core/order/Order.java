@@ -13,7 +13,7 @@ public class Order {
         this.itemPrice = itemPrice;
         this.discountPrice = discountPrice;
     }
-
+    // 계산 로직
     public int calculatePrice() {
         return itemPrice -= discountPrice;
     }
