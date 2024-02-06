@@ -20,6 +20,7 @@ public class OrderServiceTest {
         memberService = appConfig.memberService();
         orderService = appConfig.orderService();
     }
+
     @Test
     void createOrder() {
         Long memberId = 1L;
