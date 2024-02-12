@@ -11,7 +11,7 @@ import hello.core.order.OrderServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@Configuration // @Configuration 이 없으면 CGLIB 기술이 동작하지 않아 싱글톤 보장 X
 public class AppConfig {
 
     // @Bean memberService -> new MemoryMemberRepository()
@@ -32,7 +32,7 @@ public class AppConfig {
     @Bean
     public MemberService memberService() { // bean name : method 명
         System.out.println("call AppConfig.memberService");
-        return new MemberServiceImpl(memberRepository());
+        return new MemberServiceImpl(memberRepository()); // 만약 순수한 자바코드로 동작하면 new MemoryMemberRepository() 와 똑같은 것이니 여기서 생성된 객체는 스프링 컨테이너가 관리하지도 않음
     }
 
     @Bean
