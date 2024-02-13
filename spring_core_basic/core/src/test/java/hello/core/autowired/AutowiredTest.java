@@ -14,7 +14,6 @@ public class AutowiredTest {
     @Test
     void AutowiredOption() {
         ApplicationContext ac = new AnnotationConfigApplicationContext(TestBean.class); // TestBean 을 빈으로 등록하면서 Autowired 는 다 동작
-
     }
 
     static class TestBean {
