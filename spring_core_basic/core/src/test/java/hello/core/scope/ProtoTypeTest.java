@@ -17,7 +17,9 @@ public class ProtoTypeTest {
         // 프로토타입은 요청 때마다 빈을 생성하므로 초기화도 2번!
         // 싱글톤은 스프링컨테이너가 관리하고 있던 이미 생성된 빈을 반환
         ProtoTypeBean protoTypeBean1 = ac.getBean(ProtoTypeBean.class);
-        ProtoTypeBean protoTypeBean2 = ac.getBean(ProtoTypeBean.class);
+        System.out.println("find PrototypeBean1");
+        ProtoTypeBean protoTypeBean2 = ac.getBean(ProtoTypeBean.class); // getBean 요청이 들어올 때 빈 생성
+        System.out.println("find PrototypeBean2");
 
         System.out.println("protoTypeBean1 = " + protoTypeBean1);
         System.out.println("protoTypeBean2 = " + protoTypeBean2);

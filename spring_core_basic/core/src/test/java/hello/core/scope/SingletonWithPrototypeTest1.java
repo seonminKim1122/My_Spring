@@ -38,6 +38,7 @@ public class SingletonWithPrototypeTest1 {
         assertThat(result1).isEqualTo(1);
         
         // 싱글톤이랑 프로토타입을 같이 썼더니 그냥 둘 다 싱글톤 쓰는 것과 다를 게 없이 동작
+        // why? 싱글톤 빈에서 참조하는 프로토타입 빈은 싱글톤 빈의 생성시점에 이미 주입이 끝났기 때문에 프로토타입 빈을 다시 요청할 일이 없음
         int result2 = clientBean2.logic();
         assertThat(result2).isEqualTo(2);
     }
