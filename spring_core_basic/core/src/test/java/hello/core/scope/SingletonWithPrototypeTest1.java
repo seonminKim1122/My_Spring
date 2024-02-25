@@ -2,10 +2,11 @@ package hello.core.scope;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import jakarta.inject.Provider;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,21 +33,51 @@ public class SingletonWithPrototypeTest1 {
                 new AnnotationConfigApplicationContext(PrototypeBean.class, ClientBean.class);
 
         ClientBean clientBean1 = ac.getBean(ClientBean.class);
-        ClientBean clientBean2 = ac.getBean(ClientBean.class);
-
         int result1 = clientBean1.logic();
         assertThat(result1).isEqualTo(1);
-        
+
         // 싱글톤이랑 프로토타입을 같이 썼더니 그냥 둘 다 싱글톤 쓰는 것과 다를 게 없이 동작
+        // 보통 의도는 프로타타입 빈을 사용할 때마다 새롭게 생성하는 것이므로 의도와 달라지는 문제 발생
         // why? 싱글톤 빈에서 참조하는 프로토타입 빈은 싱글톤 빈의 생성시점에 이미 주입이 끝났기 때문에 프로토타입 빈을 다시 요청할 일이 없음
+        ClientBean clientBean2 = ac.getBean(ClientBean.class);
         int result2 = clientBean2.logic();
         assertThat(result2).isEqualTo(2);
+    }
+
+    @Test
+    void SingletonClientWithPrototypeProvider() {
+        AnnotationConfigApplicationContext ac =
+                new AnnotationConfigApplicationContext(PrototypeBean.class, ClientBean2.class);
+
+        ClientBean2 clientBean1 = ac.getBean(ClientBean2.class);
+        int result1 = clientBean1.logic();
+        assertThat(result1).isEqualTo(1);
+
+        ClientBean2 clientBean2 = ac.getBean(ClientBean2.class);
+        int result2 = clientBean1.logic();
+        assertThat(result2).isEqualTo(1);
+    }
+
+    @Test
+    void SingletonClientWithPrototypeJavaProvider() {
+        AnnotationConfigApplicationContext ac =
+                new AnnotationConfigApplicationContext(PrototypeBean.class, ClientBean3.class);
+
+        // No qualifying bean of type 'javax.inject.Provider'??
+        // -> 스프링부트 3.x 부터 jakarta 를 표준으로 받아들임
+        ClientBean3 clientBean1 = ac.getBean(ClientBean3.class);
+        int result1 = clientBean1.logic();
+        assertThat(result1).isEqualTo(1);
+
+        ClientBean3 clientBean2 = ac.getBean(ClientBean3.class);
+        int result2 = clientBean1.logic();
+        assertThat(result2).isEqualTo(1);
     }
 
     @Scope("singleton")
     static class ClientBean {
 
-        private final PrototypeBean prototypeBean;
+        private final PrototypeBean prototypeBean; // ClientBean 생성 시점에 주입 끝
 
 //        @Autowired - 생략 가능 + 아예 생성자도 @RequiredArgsConstructor 로 대체 가능
         public ClientBean(PrototypeBean prototypeBean) {
@@ -57,6 +88,40 @@ public class SingletonWithPrototypeTest1 {
             prototypeBean.addCount();
             int count = prototypeBean.getCount();
             return count;
+        }
+    }
+
+    @Scope("singleton")
+    static class ClientBean2 {
+
+        private final ObjectProvider<PrototypeBean> prototypeBeanProvider;
+
+        @Autowired // 스프링 컨테이너 생성할 때 정보로 넣으면 알아서 빈 등록되니 빨간줄 문제 X
+        public ClientBean2(ObjectProvider<PrototypeBean> prototypeBeanProvider) {
+            this.prototypeBeanProvider = prototypeBeanProvider;
+        }
+
+        public int logic() {
+            PrototypeBean prototypeBean = prototypeBeanProvider.getObject();
+            prototypeBean.addCount();
+            return prototypeBean.getCount();
+        }
+    }
+
+    @Scope("singleton")
+    static class ClientBean3 {
+
+        private final Provider<PrototypeBean> prototypeBeanProvider;
+
+        @Autowired
+        public ClientBean3(Provider<PrototypeBean>  prototypeBeanProvider) {
+            this.prototypeBeanProvider = prototypeBeanProvider;
+        }
+
+        public int logic() {
+            PrototypeBean prototypeBean = prototypeBeanProvider.get();
+            prototypeBean.addCount();
+            return prototypeBean.getCount();
         }
     }
 

@@ -26,6 +26,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+	// java 진영 표준 Provider 사용을 위한 라이브러리 추가
+	implementation 'jakarta.inject:jakarta.inject-api:2.0.1'
+
+	// spring-web 추가
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
 	// lombok 라이브러리 추가
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
