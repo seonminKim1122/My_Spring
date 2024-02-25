@@ -12,8 +12,10 @@ public class LogDemoService {
     private final ObjectProvider<MyLogger> myLoggerProvider;
 //    private final MyLogger myLogger;
 
+    // @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS) 로도 해결 가능
+    private  final MyLogger myLogger;
+
     public void logic(String id) {
-        MyLogger myLogger = myLoggerProvider.getObject();
         myLogger.log("service id = " + id);
     }
 }

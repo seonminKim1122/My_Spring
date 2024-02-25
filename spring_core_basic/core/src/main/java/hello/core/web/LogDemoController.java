@@ -17,13 +17,16 @@ public class LogDemoController {
 //    private final MyLogger myLogger;
 
     // Provider 를 통해 Dependency Lookup 을 할 수 있게 하여 문제 해결
-    private final ObjectProvider<MyLogger> myLoggerProvider;
+//    private final ObjectProvider<MyLogger> myLoggerProvider;
+
+    // @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS) 로도 해결 가능
+    private  final MyLogger myLogger;
 
     @RequestMapping("/log-demo")
     @ResponseBody
     public String logDemo(HttpServletRequest request) {
         String requestUrl = request.getRequestURL().toString();
-        MyLogger myLogger = myLoggerProvider.getObject();
+//        MyLogger myLogger = myLoggerProvider.getObject();
         myLogger.setRequestUrl(requestUrl);
 
         // 왜 로그가 안 찍히지?
